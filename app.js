@@ -6,6 +6,11 @@ const app = express()
 const bodyParser = require('body-parser')
 app.use(express.urlencoded({ extended: true }))
 
+// require express-handlebars
+const exphbs = require('express-handlebars')
+app.engine('hbs', exphbs({ defaultLayout: 'main', extname: 'hbs' }))
+app.set('view engine', 'hbs')
+
 // require static files
 app.use(express.static('public'))
 
@@ -34,7 +39,7 @@ app.listen(port, () => {
 // set route
 // get login page
 app.get('/', (req, res) => {
-  res.redirect('/')
+  res.render('index')
 })
 
 // post login page
@@ -43,11 +48,12 @@ app.post('/login', (req, res) => {
   const password = req.body.password
   Users.find({ email, password })
     .lean()
-    .then(user => {
-      if (user.length) {
-        res.redirect('/welcome.html')
+    .then(result => {
+      if (result.length) {
+        const firstName = result[0].firstName
+        res.render('welcome', { firstName })
       } else {
-        res.redirect('/')
+        res.render('index')
       }
     })
 })
