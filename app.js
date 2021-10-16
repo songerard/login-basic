@@ -53,7 +53,8 @@ app.post('/login', (req, res) => {
         const firstName = result[0].firstName
         res.render('welcome', { firstName })
       } else {
-        res.render('index')
+        const loginFail = true
+        res.render('index', { loginFail })
       }
     })
 })
