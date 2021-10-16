@@ -33,12 +33,8 @@ const users = [
   }
 ]
 
-// connect mongodb
-mongoose.connect('mongodb://localhost/login-basic')
-const db = mongoose.connection
-db.on('error', () => {
-  console.log('Mongodb error!')
-})
+// require mongoose config
+require('./config/mongoose')
 
 // add seeds
 db.once('open', () => {
